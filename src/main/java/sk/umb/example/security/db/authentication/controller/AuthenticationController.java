@@ -12,7 +12,7 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("api/authenticate")
+    @PostMapping("/api/authenticate")
     public void authenticate() {
         System.out.println("Authenticated.");
     }
