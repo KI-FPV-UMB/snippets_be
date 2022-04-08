@@ -1,9 +1,6 @@
 package sk.umb.example.security.db.authentication.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import sk.umb.example.security.db.authentication.service.AuthenticationService;
 
@@ -14,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
+    private final String AUTHORIZATION_HEADER = "Authorization";
     private final AuthenticationService authenticationService;
 
     public AuthenticationController(AuthenticationService authenticationService) {
@@ -21,7 +19,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/api/authentication")
-    public void login(@RequestHeader(value = "Authorization", required = false) Optional<String> authentication,
+    public void login(@RequestHeader(value = AUTHORIZATION_HEADER, required = false) Optional<String> authentication,
                       HttpServletResponse response) {
         if (authentication.isEmpty()) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -32,7 +30,7 @@ public class AuthenticationController {
         String token = authenticationService.authenticate(credentials[0], credentials[1]);
 
         response.setStatus(HttpStatus.OK.value());
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(AUTHORIZATION_HEADER, "Bearer " + token);
     }
 
     private static String[] credentialsDecode(String authorization) {
@@ -44,7 +42,7 @@ public class AuthenticationController {
     }
 
     @DeleteMapping("/api/authentication")
-    public void logoff(String bearerToken) {
-        System.out.println("Authenticated.");
+    public void logoff(@RequestHeader(value = AUTHORIZATION_HEADER, required = true) Optional<String> authentication) {
+        System.out.println("Logoff called");
     }
 }

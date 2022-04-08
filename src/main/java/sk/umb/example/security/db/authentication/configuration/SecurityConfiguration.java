@@ -10,9 +10,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sk.umb.example.security.db.authentication.core.DemoAuthenticationEntryPoint;
+import sk.umb.example.security.db.authentication.core.DemoAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
+    private final DemoAuthenticationFilter demoAuthenticationFilter;
+
+    public SecurityConfiguration(DemoAuthenticationEntryPoint demoAuthenticationEntryPoint,
+                                 DemoAuthenticationFilter demoAuthenticationFilter) {
+        this.demoAuthenticationEntryPoint = demoAuthenticationEntryPoint;
+        this.demoAuthenticationFilter = demoAuthenticationFilter;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -23,14 +34,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         webSecurity.ignoring().antMatchers(HttpMethod.POST, "/api/authentication");
     }
 
-//    @Override
-//    protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .csrf().disable()
-//                .authorizeRequests().antMatchers("/login")..and()
-//                .exceptionHandling().authenticationEntryPoint(aceAuthenticationEntryPoint).and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .addFilterBefore(aceAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests().anyRequest().authenticated().and()
+                .exceptionHandling().authenticationEntryPoint(demoAuthenticationEntryPoint).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilterBefore(demoAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
 }
