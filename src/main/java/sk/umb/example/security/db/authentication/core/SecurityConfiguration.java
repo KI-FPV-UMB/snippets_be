@@ -1,4 +1,4 @@
-package sk.umb.example.security.db.authentication.configuration;
+package sk.umb.example.security.db.authentication.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sk.umb.example.security.db.authentication.core.DemoAuthenticationEntryPoint;
-import sk.umb.example.security.db.authentication.core.DemoAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -43,5 +41,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(demoAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 }

@@ -31,7 +31,7 @@ public class AuthenticationService {
         Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isEmpty()) {
-            throw new AuthenticationCredentialsNotFoundException("User Not Found!");
+            throw new AuthenticationCredentialsNotFoundException("Username and/or password do not match!");
         }
 
         if ( ! passwordEncoder.matches(password,
