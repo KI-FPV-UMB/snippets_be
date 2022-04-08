@@ -1,6 +1,6 @@
 package sk.umb.example.security.db.book.service;
 
-public class BookDto {
+public class BookCreateDto {
     private String title;
     private String isbn;
     private String author;

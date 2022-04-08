@@ -1,10 +1,13 @@
 package sk.umb.example.security.db.book.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sk.umb.example.security.db.book.service.BookDto;
+import sk.umb.example.security.db.book.service.BookCreateDto;
+import sk.umb.example.security.db.book.service.BookResponseDto;
 import sk.umb.example.security.db.book.service.BookService;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -15,12 +18,13 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // CAN_LIST_BOOKS_ROLE
-    public List<BookDto> listAllBooks() {
-        return Collections.emptyList();
+    @GetMapping("/api/books")
+    public List<BookResponseDto> listAllBooks() {
+        return bookService.listAllBooks();
     }
 
-    // CAN_CREATE_BOOKS_ROLE
-    public void createBook() {
+    @PostMapping("/api/books")
+    public Long createBook(@RequestBody BookCreateDto bookCreateDto) {
+        return bookService.createBook(bookCreateDto);
     }
 }

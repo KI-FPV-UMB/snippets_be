@@ -1,10 +1,11 @@
 package sk.umb.example.security.db.authentication.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.umb.example.security.db.authentication.service.AuthenticationService;
 
-@RestController
+//@RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -12,8 +13,13 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/api/authenticate")
-    public void authenticate() {
+    @PostMapping("/api/authentication")
+    public void login() {
+        System.out.println("Authenticated.");
+    }
+
+    @DeleteMapping("/api/authentication/{bearerToken}")
+    public void logoff(String bearerToken) {
         System.out.println("Authenticated.");
     }
 }
