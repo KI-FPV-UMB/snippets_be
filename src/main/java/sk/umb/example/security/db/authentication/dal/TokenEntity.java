@@ -1,6 +1,7 @@
 package sk.umb.example.security.db.authentication.dal;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class TokenEntity {
@@ -15,6 +16,9 @@ public class TokenEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @Column(name = "valid_until", columnDefinition = "TIMESTAMP")
+    private LocalDateTime validUntil;
 
     public Long getId() {
         return id;
@@ -38,5 +42,13 @@ public class TokenEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public LocalDateTime getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(LocalDateTime validUntil) {
+        this.validUntil = validUntil;
     }
 }
