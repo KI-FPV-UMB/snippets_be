@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "40c40f6f-407e-43a2-88a6-719061aeeb41",
+							"value": "ba26558a-0ab4-403e-bc21-cf190bd08a0c",
 							"type": "string"
 						}
 					]
@@ -38,6 +38,16 @@
 		{
 			"name": "Add book",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ba26558a-0ab4-403e-bc21-cf190bd08a0c",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -72,7 +82,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "JankoveHeslo",
+							"value": "JankoveBasicHeslo",
 							"type": "string"
 						},
 						{
@@ -107,7 +117,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "e13bc8d3-f4c0-4f03-8e82-4b9115d74eb4",
+							"value": "06deda6c-55b1-4c04-a42e-c6d8352cd946",
 							"type": "string"
 						}
 					]
