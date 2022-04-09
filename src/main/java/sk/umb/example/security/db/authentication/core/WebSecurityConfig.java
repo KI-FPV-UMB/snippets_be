@@ -1,5 +1,7 @@
 package sk.umb.example.security.db.authentication.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,24 +9,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final DemoAuthenticationFilter demoAuthenticationFilter;
+    private final DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
 
-    public SecurityConfiguration(DemoAuthenticationEntryPoint demoAuthenticationEntryPoint,
-                                 DemoAuthenticationFilter demoAuthenticationFilter) {
-        this.demoAuthenticationEntryPoint = demoAuthenticationEntryPoint;
+    public WebSecurityConfig(DemoAuthenticationFilter demoAuthenticationFilter,
+                             DemoAuthenticationEntryPoint demoAuthenticationEntryPoint) {
         this.demoAuthenticationFilter = demoAuthenticationFilter;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        this.demoAuthenticationEntryPoint = demoAuthenticationEntryPoint;
     }
 
     @Override
@@ -34,11 +29,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated().and()
+        httpSecurity.csrf().disable()
+                .authorizeRequests()
+                .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(demoAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(demoAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Bean
+    public FilterRegistrationBean registration(DemoAuthenticationFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
+
 }

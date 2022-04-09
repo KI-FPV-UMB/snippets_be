@@ -1,17 +1,16 @@
 package sk.umb.example.security.db.authentication.service;
 
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sk.umb.example.security.db.authentication.dal.TokenEntity;
-import sk.umb.example.security.db.authentication.dal.TokenRepository;
-import sk.umb.example.security.db.authentication.dal.UserEntity;
-import sk.umb.example.security.db.authentication.dal.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+import sk.umb.example.security.db.authentication.dal.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 // use https://bcrypt-generator.com/ with round = 1 to hash password
 
@@ -27,6 +26,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public String authenticate(String username, String password) {
         Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
 
@@ -49,7 +49,19 @@ public class AuthenticationService {
         return token.getToken();
     }
 
-    public void authenticate(String token) {
+    @Transactional
+    public UserRolesDto authenticate(String token) {
+        Optional<TokenEntity> optionalToken = tokenRepository.findByToken(token);
+
+        if (optionalToken.isEmpty()) {
+            throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
+        }
+
+        Set<RoleEntity> roles = optionalToken.get().getUser().getRoles();
+        Set<String> roleNames = roles.stream()
+                .map( entry -> entry.getRoleName()).collect(Collectors.toSet());
+
+        return new UserRolesDto(optionalToken.get().getUser().getUsername(), roleNames);
     }
 
     private static String randomString() {
