@@ -1,6 +1,7 @@
 package sk.umb.example.security.db.authentication.service;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +9,6 @@ import sk.umb.example.security.db.authentication.dal.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -21,10 +21,10 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationService(UserRepository userRepository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder) {
+    public AuthenticationService(UserRepository userRepository, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Transactional
@@ -41,7 +41,8 @@ public class AuthenticationService {
         }
 
         TokenEntity token = new TokenEntity();
-        token.setToken(randomString());
+        String randomString = UUID.randomUUID().toString();
+        token.setToken(randomString);
         token.setUser(optionalUser.get());
         token.setValidUntil(LocalDateTime.now());
 
@@ -75,10 +76,6 @@ public class AuthenticationService {
         if ( now.isAfter(tokenExpiration) ) {
             throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
         }
-    }
-
-    private static String randomString() {
-        return UUID.randomUUID().toString();
     }
 
     @Transactional
