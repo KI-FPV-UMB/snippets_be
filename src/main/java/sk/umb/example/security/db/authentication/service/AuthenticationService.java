@@ -12,8 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// use https://bcrypt-generator.com/ with round = 1 to hash password
-
 @Service
 public class AuthenticationService {
     private final UserRepository userRepository;
@@ -66,5 +64,10 @@ public class AuthenticationService {
 
     private static String randomString() {
         return UUID.randomUUID().toString();
+    }
+
+    @Transactional
+    public void tokenRemove(String token) {
+        tokenRepository.deleteByToken(token);
     }
 }

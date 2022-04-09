@@ -1,8 +1,5 @@
 package sk.umb.example.security.db.authentication.core;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,16 +7,17 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sk.umb.example.security.db.authentication.service.AuthenticationService;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final DemoAuthenticationFilter demoAuthenticationFilter;
     private final DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
+    private final AuthenticationService authenticationService;
 
-    public WebSecurityConfig(DemoAuthenticationFilter demoAuthenticationFilter,
-                             DemoAuthenticationEntryPoint demoAuthenticationEntryPoint) {
-        this.demoAuthenticationFilter = demoAuthenticationFilter;
+    public WebSecurityConfig(DemoAuthenticationEntryPoint demoAuthenticationEntryPoint,
+                             AuthenticationService authenticationService) {
         this.demoAuthenticationEntryPoint = demoAuthenticationEntryPoint;
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -30,18 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated().and()
+                .authorizeRequests().anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(demoAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilterBefore(demoAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new DemoAuthenticationFilter(authenticationService), UsernamePasswordAuthenticationFilter.class);
     }
-
-    @Bean
-    public FilterRegistrationBean registration(DemoAuthenticationFilter filter) {
-        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-        registration.setEnabled(false);
-        return registration;
-    }
-
 }
