@@ -1,5 +1,6 @@
 package sk.umb.example.security.db.book.service;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.umb.example.security.db.book.dal.BookEntity;
@@ -17,6 +18,7 @@ public class BookService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookResponseDto> listAllBooks() {
         List<BookResponseDto> books = new ArrayList<>();
 
@@ -38,6 +40,8 @@ public class BookService {
         return bookResponseDto;
     }
 
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Long createBook(BookCreateDto bookCreateDto) {
         BookEntity bookEntity = new BookEntity();
 
