@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.umb.example.security.db.authentication.dal.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
+    private static final int TOKEN_VALIDITY_IN_MINUTES = 15;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
@@ -40,7 +43,7 @@ public class AuthenticationService {
         TokenEntity token = new TokenEntity();
         token.setToken(randomString());
         token.setUser(optionalUser.get());
-        token.setValidUntil(LocalDateTime.now().plusMinutes(15));
+        token.setValidUntil(LocalDateTime.now());
 
         tokenRepository.save(token);
 
@@ -55,11 +58,23 @@ public class AuthenticationService {
             throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
         }
 
+        validateTokenExpiration(optionalToken.get());
+
         Set<RoleEntity> roles = optionalToken.get().getUser().getRoles();
         Set<String> roleNames = roles.stream()
-                .map( entry -> entry.getRoleName()).collect(Collectors.toSet());
+                                     .map( entry -> entry.getRoleName())
+                                     .collect(Collectors.toSet());
 
         return new UserRolesDto(optionalToken.get().getUser().getUsername(), roleNames);
+    }
+
+    private void validateTokenExpiration(TokenEntity token) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tokenExpiration = token.getValidUntil().plus(TOKEN_VALIDITY_IN_MINUTES, ChronoUnit.MINUTES);
+
+        if ( now.isAfter(tokenExpiration) ) {
+            throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
+        }
     }
 
     private static String randomString() {
