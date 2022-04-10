@@ -3,7 +3,7 @@ package sk.umb.example.security.db.authentication.dal;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "token")
 public class TokenEntity {
     @Id
     @GeneratedValue
