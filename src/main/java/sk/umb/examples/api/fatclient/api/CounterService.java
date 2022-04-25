@@ -1,7 +1,5 @@
 package sk.umb.examples.api.fatclient.api;
 
-public class CounterService {
-    public int increment(int number) {
-        return number + 1;
-    }
+public interface CounterService {
+    int increment(int number);
 }
