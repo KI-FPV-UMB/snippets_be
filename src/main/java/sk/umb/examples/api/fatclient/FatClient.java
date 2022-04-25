@@ -2,7 +2,6 @@ package sk.umb.examples.api.fatclient;
 
 import sk.umb.examples.api.api.CounterService;
 import sk.umb.examples.api.client.CounterServiceClient;
-import sk.umb.examples.api.server.service.CounterServiceImpl;
 
 import java.awt.*;
 import java.awt.event.*;

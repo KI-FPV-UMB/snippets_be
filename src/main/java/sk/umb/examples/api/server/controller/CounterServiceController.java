@@ -15,6 +15,8 @@ public class CounterServiceController {
 
     @GetMapping("/api/{number}")
     public int increment(@PathVariable("number") int number) {
+        System.out.println("Rest API called.");
+
         return counterService.increment(number);
     }
 }
