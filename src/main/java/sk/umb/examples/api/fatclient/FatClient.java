@@ -1,7 +1,8 @@
 package sk.umb.examples.api.fatclient;
 
-import sk.umb.examples.api.fatclient.api.CounterService;
-import sk.umb.examples.api.fatclient.api.CounterServiceImpl;
+import sk.umb.examples.api.api.CounterService;
+import sk.umb.examples.api.client.CounterServiceClient;
+import sk.umb.examples.api.server.service.CounterServiceImpl;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,10 +13,10 @@ public class FatClient extends Frame {
     private final CounterService counterService;
 
     public static void main(String[] args) {
-        new FatClient(new CounterServiceImpl());
+        new FatClient(new CounterServiceClient());
     }
 
-    public FatClient(CounterServiceImpl counterService) {
+    public FatClient(CounterService counterService) {
         this.counterService = counterService;
         this.initApp();
     }
