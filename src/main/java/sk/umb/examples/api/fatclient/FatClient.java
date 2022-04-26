@@ -1,31 +1,30 @@
 package sk.umb.examples.api.fatclient;
 
-import sk.umb.examples.api.fatclient.api.CounterService;
-
 import java.awt.*;
 import java.awt.event.*;
 
 public class FatClient extends Frame {
-    private TextField tfCount;
+    private TextField tfInput;
+    private TextField tfName;
 
-    private final CounterService counterService;
+    private final PersonServiceImpl personService;
 
     public static void main(String[] args) {
-        new FatClient(new CounterService());
+        new FatClient(new PersonServiceImpl());
     }
 
-    public FatClient(CounterService counterService) {
-        this.counterService = counterService;
+    public FatClient(PersonServiceImpl personService) {
+        this.personService = personService;
         this.initApp();
     }
 
     private class BtnCountListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            final int actualValue = Integer.parseInt(tfCount.getText());
-            final int newValue = counterService.increment(actualValue);
+            final int actualValue = Integer.parseInt(tfInput.getText());
+            final String newValue = personService.getPerson(actualValue).getName();
 
-            tfCount.setText(String.valueOf(newValue));
+            tfName.setText(String.valueOf(newValue));
         }
     }
 
@@ -33,20 +32,22 @@ public class FatClient extends Frame {
 
     private void initApp() {
         setLayout(new FlowLayout());
-        Label lblCount = new Label("Counter");
-        add(lblCount);
 
-        tfCount = new TextField(String.valueOf(0), 10);
-        tfCount.setEditable(false);
-        add(tfCount);
+        tfInput = new TextField(String.valueOf(1), 10);
+        tfInput.setEditable(true);
+        add(tfInput);
 
-        Button btnCount = new Button("Count");
+        tfName = new TextField("", 10);
+        tfName.setEditable(false);
+        add(tfName);
+
+        Button btnCount = new Button("Load Person");
         add(btnCount);
 
         BtnCountListener listener = new BtnCountListener();
         btnCount.addActionListener(listener);
 
-        setTitle("AWT Counter");
+        setTitle("Person Loader");
         setSize(300, 100);
 
         setVisible(true);
