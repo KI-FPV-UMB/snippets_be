@@ -1,4 +1,4 @@
-package sk.umb.examples.api.fatclient;
+package sk.umb.examples.api.client;
 
 import org.springframework.web.client.RestTemplate;
 import sk.umb.examples.api.api.PersonDto;
