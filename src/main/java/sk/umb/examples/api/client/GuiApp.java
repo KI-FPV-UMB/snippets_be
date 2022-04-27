@@ -1,19 +1,19 @@
-package sk.umb.examples.api.fatclient;
+package sk.umb.examples.api.client;
 
 import java.awt.*;
 import java.awt.event.*;
 
-public class FatClient extends Frame {
+public class GuiApp extends Frame {
     private TextField tfInput;
     private TextField tfName;
 
     private final PersonServiceImpl personService;
 
     public static void main(String[] args) {
-        new FatClient(new PersonServiceImpl());
+        new GuiApp(new PersonServiceImpl());
     }
 
-    public FatClient(PersonServiceImpl personService) {
+    public GuiApp(PersonServiceImpl personService) {
         this.personService = personService;
         this.initApp();
     }

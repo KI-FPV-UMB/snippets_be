@@ -1,4 +1,4 @@
-package sk.umb.examples.api.fatclient;
+package sk.umb.examples.api.client;
 
 public class PersonServiceImpl {
     public PersonDto getPerson(int number) {

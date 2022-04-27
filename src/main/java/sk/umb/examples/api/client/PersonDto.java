@@ -1,4 +1,4 @@
-package sk.umb.examples.api.fatclient;
+package sk.umb.examples.api.client;
 
 public class PersonDto {
     private String name;
