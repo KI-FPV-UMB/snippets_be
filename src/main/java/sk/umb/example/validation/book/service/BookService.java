@@ -1,9 +1,9 @@
-package sk.umb.example.security.db.book.service;
+package sk.umb.example.validation.book.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sk.umb.example.security.db.book.dal.BookEntity;
-import sk.umb.example.security.db.book.dal.BookRepository;
+import sk.umb.example.validation.book.dal.BookEntity;
+import sk.umb.example.validation.book.dal.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;

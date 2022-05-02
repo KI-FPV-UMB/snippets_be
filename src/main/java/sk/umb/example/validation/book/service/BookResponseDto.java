@@ -1,24 +1,9 @@
-package sk.umb.example.security.db.book.dal;
+package sk.umb.example.validation.book.service;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity(name = "books")
-public class BookEntity {
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue
+public class BookResponseDto {
     private Long id;
-
-    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(name = "isbn", nullable = false)
     private String isbn;
-
-    @Column(name = "author", nullable = false)
     private String author;
 
     public Long getId() {

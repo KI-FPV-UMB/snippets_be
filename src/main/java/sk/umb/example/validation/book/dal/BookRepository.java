@@ -1,4 +1,4 @@
-package sk.umb.example.security.db.book.dal;
+package sk.umb.example.validation.book.dal;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

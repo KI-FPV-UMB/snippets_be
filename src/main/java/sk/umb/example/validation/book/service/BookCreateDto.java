@@ -1,4 +1,4 @@
-package sk.umb.example.security.db.book.service;
+package sk.umb.example.validation.book.service;
 
 public class BookCreateDto {
     private String title;
