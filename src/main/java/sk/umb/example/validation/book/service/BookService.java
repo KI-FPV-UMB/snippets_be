@@ -3,9 +3,12 @@ package sk.umb.example.validation.book.service;
 import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class BookService {
     private static Faker FAKER = new Faker();
+    private static Random RANDOM_NUMBERS = new Random();
 
     public BookResponseDto getBook(Long bookId) {
         if (bookId != 1) {
@@ -13,7 +16,6 @@ public class BookService {
         }
 
         BookResponseDto responseDto = new BookResponseDto();
-        responseDto.setId(1L);
         responseDto.setAuthor(FAKER.book().author());
         responseDto.setTitle(FAKER.book().title());
         responseDto.setPublisher(FAKER.book().publisher());
@@ -23,6 +25,6 @@ public class BookService {
     }
 
     public Long createBook(BookCreateDto bookCreateDto) {
-        return 2L;
+        return RANDOM_NUMBERS.nextLong();
     }
 }
