@@ -1,52 +1,31 @@
 package sk.umb.example.validation.book.service;
 
+import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import sk.umb.example.validation.book.dal.BookEntity;
-import sk.umb.example.validation.book.dal.BookRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 @Service
 public class BookService {
-    private final BookRepository bookRepository;
+    private static Faker FAKER = new Faker();
+    private static Random RANDOM_NUMBERS = new Random();
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
-
-    @Transactional
-    public List<BookResponseDto> listAllBooks() {
-        List<BookResponseDto> books = new ArrayList<>();
-
-        for ( BookEntity entity : bookRepository.findAll() ) {
-            books.add(mapToBookResponseDto(entity));
+    public BookResponseDto getBook(Long bookId) {
+        if (bookId != 1) {
+            throw new BookServiceException("Book not found");
         }
 
-        return books;
-    }
+        BookResponseDto responseDto = new BookResponseDto();
+        responseDto.setId(1L);
+        responseDto.setAuthor(FAKER.book().author());
+        responseDto.setTitle(FAKER.book().title());
+        responseDto.setPublisher(FAKER.book().publisher());
 
-    private BookResponseDto mapToBookResponseDto(BookEntity entity) {
-        BookResponseDto bookResponseDto = new BookResponseDto();
+        return responseDto;
 
-        bookResponseDto.setId(entity.getId());
-        bookResponseDto.setAuthor(entity.getAuthor());
-        bookResponseDto.setTitle(entity.getTitle());
-        bookResponseDto.setIsbn(entity.getIsbn());
-
-        return bookResponseDto;
     }
 
     public Long createBook(BookCreateDto bookCreateDto) {
-        BookEntity bookEntity = new BookEntity();
-
-        bookEntity.setAuthor(bookCreateDto.getAuthor());
-        bookEntity.setTitle(bookCreateDto.getTitle());
-        bookEntity.setIsbn(bookCreateDto.getIsbn());
-
-        bookRepository.save(bookEntity);
-
-        return bookEntity.getId();
+        return RANDOM_NUMBERS.nextLong();
     }
 }

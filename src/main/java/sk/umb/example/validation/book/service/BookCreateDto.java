@@ -1,9 +1,20 @@
 package sk.umb.example.validation.book.service;
 
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class BookCreateDto {
+
+    @NotBlank(message = "Title must not be empty.")
     private String title;
-    private String isbn;
+    private String publisher;
     private String author;
+
+    @Min(value = 1, message = "Amount must be at least 1.")
+    private int amount;
 
     public String getTitle() {
         return title;
@@ -13,12 +24,12 @@ public class BookCreateDto {
         this.title = title;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public String getAuthor() {
@@ -27,5 +38,13 @@ public class BookCreateDto {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

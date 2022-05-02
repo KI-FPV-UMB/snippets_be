@@ -3,7 +3,7 @@ package sk.umb.example.validation.book.service;
 public class BookResponseDto {
     private Long id;
     private String title;
-    private String isbn;
+    private String publisher;
     private String author;
 
     public Long getId() {
@@ -22,19 +22,19 @@ public class BookResponseDto {
         this.title = title;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
     public String getAuthor() {
         return author;
     }
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 }
