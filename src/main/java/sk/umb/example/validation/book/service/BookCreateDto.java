@@ -1,17 +1,13 @@
 package sk.umb.example.validation.book.service;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 public class BookCreateDto {
-    @NotBlank(message = "Title must not be empty.")
     private String title;
 
     private String publisher;
 
     private String author;
 
-    @Min(value = 1, message = "Amount must be at least 1.")
     private int amount;
 
     public String getTitle() {

@@ -11,10 +11,6 @@ public class BookService {
     private static Random RANDOM_NUMBERS = new Random();
 
     public BookResponseDto getBook(Long bookId) {
-        if (bookId != 1) {
-            throw new BookServiceException("Book not found");
-        }
-
         BookResponseDto responseDto = new BookResponseDto();
         responseDto.setAuthor(FAKER.book().author());
         responseDto.setTitle(FAKER.book().title());
