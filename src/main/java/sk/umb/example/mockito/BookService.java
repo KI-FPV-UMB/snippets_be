@@ -18,7 +18,7 @@ public class BookService {
         simpleInputValidation(bookDto);
 
         BookEntity entity = repository.save(mapper.toEntity(bookDto));
-        mailService.sendMail("admin@exmaple.com", "New book arrived.", bookDto.toString());
+        mailService.sendMail("admin@exmaple.com", "New book arrived.", entity.toString());
 
         return entity.getId();
     }

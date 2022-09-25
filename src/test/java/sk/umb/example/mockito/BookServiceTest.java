@@ -2,6 +2,8 @@ package sk.umb.example.mockito;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,14 +23,23 @@ class BookServiceTest {
     @Mock
     private MailService mailService;
 
+    @Mock
+    private BookMapper mapper;
+
+    @Captor
+    private ArgumentCaptor<String> emailBodyCaptor;
+
     @Test
     public void bookServiceSaveValid() {
         Long generatedId = 1L;
         // --- Setup section
+        BookEntity fakeEntity = new BookEntity().setId(generatedId)
+                .setAuthor("Famous Author")
+                .setTitle("Unknown title");
+
+
         when(bookRepository.save(any()))
-                .thenReturn(new BookEntity().setId(generatedId)
-                                            .setAuthor("AUTH")
-                                            .setTitle("TITL."));
+                .thenReturn(fakeEntity);
 
         BookDto bookToSave = new BookDto().setAuthor("Famous Author")
                                           .setTitle("Unknown title");
@@ -37,6 +48,7 @@ class BookServiceTest {
 
         assertEquals(generatedId, id);
         verify(bookRepository, times(1)).save(any());
-        verify(mailService, times(1)).sendMail(any(), any(), any());
+        verify(mailService, times(1)).sendMail(any(), any(), emailBodyCaptor.capture());
+        assertEquals(fakeEntity.toString() , emailBodyCaptor.getValue());
     }
 }
