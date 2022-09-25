@@ -14,7 +14,7 @@ public class BookService {
 
     public Long saveBook(BookDto bookDto) {
         BookEntity entity = repository.save(toEntity(bookDto));
-        mailService.sendMail("admin@exmaple.com", "New book arrived", bookDto.toString());
+        mailService.sendMail("admin@exmaple.com", "New book arrived", entity.toString());
         return entity.getId();
     }
 
