@@ -2,6 +2,7 @@ package sk.umb.example.mockito;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,31 +12,28 @@ import java.util.stream.Collectors;
 public class BookService {
     private final MailService mailService;
     private final BookRepository repository;
+    private final BookMapper mapper;
 
     public Long saveBook(BookDto bookDto) {
-        BookEntity entity = repository.save(toEntity(bookDto));
-        mailService.sendMail("admin@exmaple.com", "New book arrived", bookDto.toString());
+        simpleInputValidation(bookDto);
+
+        BookEntity entity = repository.save(mapper.toEntity(bookDto));
+        mailService.sendMail("admin@exmaple.com", "New book arrived.", bookDto.toString());
+
         return entity.getId();
     }
 
     public List<BookDto> getAllBooks() {
         return repository.findAll()
                 .stream()
-                .map(BookService::toDto)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    private static BookEntity toEntity(BookDto dto) {
-        return new BookEntity()
-                .setId(dto.getId())
-                .setAuthor(dto.getAuthor())
-                .setTitle(dto.getTitle());
-    }
-
-    private static BookDto toDto(BookEntity entity) {
-        return new BookDto()
-                .setId(entity.getId())
-                .setAuthor(entity.getAuthor())
-                .setTitle(entity.getTitle());
+    private static void simpleInputValidation(BookDto dto) {
+        if (   ! StringUtils.hasText(dto.getAuthor())
+            || ! StringUtils.hasText(dto.getTitle())) {
+            throw new IllegalArgumentException("Author or Title are empty fields");
+        }
     }
 }
