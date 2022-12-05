@@ -16,26 +16,25 @@ public class GwApplication {
     private Queue queue;
 
     @Autowired
+    private Publisher publisher;
+
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(GwApplication.class, args);
     }
 
-    @PostMapping("/send")
-    public void send(@RequestBody String name) {
-        System.out.println("/send " + name);
-        rabbitTemplate.convertAndSend(queue.getName(), name);
+    @PostMapping("/send-worker")
+    public void send(@RequestBody String message) {
+        System.out.println("/send " + message);
+        rabbitTemplate.convertAndSend(queue.getName(), message);
     }
 
-    @PostMapping("/send-reply")
-    public String sendReply(@RequestBody String name) {
+    @PostMapping("/send-many")
+    public void sendReply(@RequestBody String name) throws Exception {
         System.out.println("/send-reply " + name);
-        return "OK";
-    }
-    @PostMapping("/send-worker")
-    public void sendWorker(@RequestBody String name) {
-        System.out.println("/send-worker " + name);
+        publisher.sendMessage(name);
     }
 
 }

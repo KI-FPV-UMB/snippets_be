@@ -11,5 +11,4 @@ public class RabbitConfig {
     public Queue queue() {
         return new Queue(queueName);
     }
-
 }
