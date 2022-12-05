@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class WorkerApplication {
+    public static String APP_NAME = "";
+
     public static void main(String[] args) {
+        APP_NAME = args[0];
+        System.out.printf("Started with " + APP_NAME);
         SpringApplication.run(WorkerApplication.class, args);
     }
 
