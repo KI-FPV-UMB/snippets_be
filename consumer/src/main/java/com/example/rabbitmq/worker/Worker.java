@@ -8,6 +8,6 @@ public class Worker {
     private int counter  = 0;
     @RabbitListener(queues = "DEMO-QUEUE")
     public void receiveMessage(String message) {
-        System.out.println(ConsumerApplication.APP_NAME + " received message #" + counter++ +": " + message);
+        System.out.println(ConsumerApplication.APP_NAME + " received task #" + counter++ +": " + message);
     }
 }

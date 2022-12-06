@@ -3,6 +3,7 @@ package com.example.rabbitmq.worker;
 import com.rabbitmq.client.*;
 
 public class Subscriber {
+    private int counter  = 0;
     public void subscribe() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
 
@@ -18,6 +19,7 @@ public class Subscriber {
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
+            System.out.println(ConsumerApplication.APP_NAME + " received published message #" + counter++ +": " + message);
             System.out.println("Received: " + message );
         };
 

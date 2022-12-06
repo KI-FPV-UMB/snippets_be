@@ -9,15 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>rabbit-mq-worker</artifactId>
-    <name>rabbit-mq-gw</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-    </dependencies>
+    <artifactId>rabbit-mq-consumer</artifactId>
 
     <build>
         <plugins>
