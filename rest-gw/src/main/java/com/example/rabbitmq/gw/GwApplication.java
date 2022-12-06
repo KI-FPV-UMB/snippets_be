@@ -25,15 +25,15 @@ public class GwApplication {
         SpringApplication.run(GwApplication.class, args);
     }
 
-    @PostMapping("/send-worker")
+    @PostMapping("/send-to-worker")
     public void send(@RequestBody String message) {
-        System.out.println("/send " + message);
+        System.out.println("/send-to-worker " + message);
         rabbitTemplate.convertAndSend(queue.getName(), message);
     }
 
-    @PostMapping("/send-many")
+    @PostMapping("/publish")
     public void sendReply(@RequestBody String name) throws Exception {
-        System.out.println("/send-reply " + name);
+        System.out.println("/publish " + name);
         publisher.sendMessage(name);
     }
 
