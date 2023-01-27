@@ -1,5 +1,6 @@
 # snippets_be
 
+
 * Compile application and all modules: **mvn clean install**
 * Start RabbitMQ server: **docker-compose up**
 * Start one rest-publisher instance
